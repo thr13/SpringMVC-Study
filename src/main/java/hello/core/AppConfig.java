@@ -23,19 +23,26 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
 
-    @Bean
-    public MemberService memberService() {
-        return new MemberServiceImpl(new MemoryMemberRepository());
-    }
+    // call AppConfig.memberService
+    // call AppConfig.memberRepository
+    // call AppConfig.orderService
 
     @Bean
-    public MemberRepository memberRepository() { // DB 를 변경할 경우 이 메소드만 수정하면 된다
-        return new MemoryMemberRepository();
+    public MemberService memberService() {
+        System.out.println("call AppConfig.memberService");
+        return new MemberServiceImpl(memberRepository());
     }
 
     @Bean
     public OrderService orderService() {
+        System.out.println("call AppConfig.orderService");
         return new OrderServiceImpl(discountPolicy(), memberRepository());
+    }
+
+    @Bean
+    public MemberRepository memberRepository() { // DB 를 변경할 경우 이 메소드만 수정하면 된다
+        System.out.println("call AppConfig.memberRepository");
+        return new MemoryMemberRepository();
     }
 
     @Bean
