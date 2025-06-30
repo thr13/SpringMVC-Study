@@ -1,5 +1,8 @@
 package hello.core;
 
+import hello.core.member.MemberRepository;
+import hello.core.member.MemoryMemberRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
@@ -12,4 +15,8 @@ import org.springframework.context.annotation.FilterType;
 ) // 탐색 위치와 기본 스캔 대상을 지정하지 않을경우, @ComponentScan 이 붙은 설정 정보 클래스의 패키지가 시작 위치가 된다
 public class AutoAppConfig {
 
+    @Bean(name = "memoryMemberRepository") //  수동 빈 등록시 스프링 부트가 자동 빈 등록과 충돌시킨다
+    public MemberRepository memberRepository() {
+        return new MemoryMemberRepository();
+    }
 }
