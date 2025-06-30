@@ -21,4 +21,9 @@ public class MemberServiceImpl implements MemberService {
     public Member findMember(Long memberId) {
         return memberRepository.findById(memberId);
     }
+
+    // 테스트용 - 스프링 컨테이너가 싱글톤으로 관리하는지 확인하는 코드
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
+    }
 }

@@ -32,4 +32,9 @@ public class OrderServiceImpl implements OrderService {
 
         return new Order(memberId, itemName, itemPrice, discountPrice);
     }
+
+    // 테스트용 - 스프링 컨테이너가 싱글톤으로 관리하는지 확인하는 코드
+    public MemberRepository getMemberRepository() {
+        return memberRepository;
+    }
 }
