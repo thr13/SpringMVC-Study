@@ -20,14 +20,24 @@ public class OrderServiceImpl implements OrderService {
     해결방법:
     제3자가 클라이언트인 OrderServiceImpl 에 추상체인 DiscountPolicy 의 구현 객체를 대신 생성하고 주입해야함
      */
-    private DiscountPolicy discountPolicy;
+//    private DiscountPolicy discountPolicy;
+//    private final MemberRepository memberRepository;
     private final MemberRepository memberRepository;
+    private final DiscountPolicy discountPolicy;
 
-    @Autowired
-    public OrderServiceImpl(DiscountPolicy discountPolicy, MemberRepository memberRepository) {
+    @Autowired // 생성자가 하나일 경우 @Autowired 생략 가능, 주입할 대상이 없어도 동작하게 하려면 required = false 로 지정하면 된다
+    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+        System.out.println("memberRepository = " + memberRepository);
+        System.out.println("discountPolicy = " + discountPolicy);
         this.discountPolicy = discountPolicy;
         this.memberRepository = memberRepository;
     }
+
+//    @Autowired // 일반 메서드 주입
+//    public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
+//        this.memberRepository = memberRepository;
+//        this.discountPolicy = discountPolicy;
+//    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
