@@ -1,5 +1,7 @@
 package hello.core.lifecycle;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
@@ -10,7 +12,7 @@ import org.springframework.beans.factory.InitializingBean;
 초기화 콜백: 빈이 생성되고, 빈의 의존관계 주입이 완료된 후 호출
 소멸전 콜백: 빈이 소멸되기 직전에 호출
  */
-public class NetworkClient implements InitializingBean, DisposableBean {
+public class NetworkClient {
 
     private String url;
 
@@ -38,16 +40,17 @@ public class NetworkClient implements InitializingBean, DisposableBean {
         System.out.println("close : " + url);
     }
 
-    @Override
-    public void afterPropertiesSet() throws Exception { //InitializingBean: 초기화 빈, 의존관계 설정이 끝난후 호출됨
-        System.out.println("NetworkClient.afterPropertiesSet");
+    // 스프링에 의존하지 않도록 코드 수정 -> 외부 라이브러리에도 초기화, 종료 메서드를 적용할 수 있다
+    @PostConstruct
+    public void init() {
+        System.out.println("NetworkClient.init");
         connect();
         call("초기화 연결 메시지");
     }
 
-    @Override
-    public void destroy() throws Exception {//DisposableBean: 빈이 종료될 떄 호출됨
-        System.out.println("NetworkClient.destroy");
+    @PreDestroy
+    public void close() {
+        System.out.println("NetworkClient.close");
         disconnect();
     }
 }

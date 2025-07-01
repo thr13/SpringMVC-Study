@@ -17,6 +17,8 @@ class BeanLifeCycleTest {
 
     @Configuration
     static class LifeCycleConfig {
+
+        //@Bean(initMethod = "init", destroyMethod = "close") // @Bean 의 DisposableBean 속성은 디폴트가 (inferred) 로 잡혀있다 이는 close, shutdown 라는 이름의 메서드를 자동으로 호출해준다
         @Bean
         public NetworkClient networkClient() {
             NetworkClient networkClient = new NetworkClient();
