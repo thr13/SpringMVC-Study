@@ -1,4 +1,8 @@
 package hello.core.lifecycle;
+
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+
 /*
 스프링 빈의 이벤트 라이프사이클
 스프링 컨테이너 생성 - 스프링 빈 생성 - 의존관계 주입 - 초기화 콜백 - 애플리케이션 동작(사용) - 소멸전 콜백 - 스프링 종료
@@ -6,14 +10,14 @@ package hello.core.lifecycle;
 초기화 콜백: 빈이 생성되고, 빈의 의존관계 주입이 완료된 후 호출
 소멸전 콜백: 빈이 소멸되기 직전에 호출
  */
-public class NetworkClient {
+public class NetworkClient implements InitializingBean, DisposableBean {
 
     private String url;
 
     public NetworkClient() {
         System.out.println("생성자 호출, url = " + url);
-        connect();
-        call("초기화 연결 메시지");
+//        connect();
+//        call("초기화 연결 메시지");
     }
 
     public void setUrl(String url) {
@@ -32,5 +36,18 @@ public class NetworkClient {
     // 서비스 종료시 호출
     public void disconnect() {
         System.out.println("close : " + url);
+    }
+
+    @Override
+    public void afterPropertiesSet() throws Exception { //InitializingBean: 초기화 빈, 의존관계 설정이 끝난후 호출됨
+        System.out.println("NetworkClient.afterPropertiesSet");
+        connect();
+        call("초기화 연결 메시지");
+    }
+
+    @Override
+    public void destroy() throws Exception {//DisposableBean: 빈이 종료될 떄 호출됨
+        System.out.println("NetworkClient.destroy");
+        disconnect();
     }
 }
