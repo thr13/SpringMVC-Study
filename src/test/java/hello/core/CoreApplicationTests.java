@@ -5,12 +5,11 @@ import hello.core.order.OrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 @SpringBootTest
 class CoreApplicationTests {
-
-//	@Autowired OrderService orderService;
-//	@Autowired MemberService memberService; // Test 코드는 필드주입해도 괜찮다!!
 
 	@Test
 	void contextLoads() {
