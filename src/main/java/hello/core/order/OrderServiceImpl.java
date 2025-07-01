@@ -3,12 +3,11 @@ package hello.core.order;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-@Component
-public class OrderServiceImpl implements OrderService {
-    /*
+/*
     할인 정책의 클라이언트 OrderServiceImpl
 
     추상체뿐만 아니라 구현체에 의존하고 있기 때문에 '할인정책' 변경시 여기 코드도 수정해야한다 -> OCP, DIP 위반
@@ -19,25 +18,16 @@ public class OrderServiceImpl implements OrderService {
 
     해결방법:
     제3자가 클라이언트인 OrderServiceImpl 에 추상체인 DiscountPolicy 의 구현 객체를 대신 생성하고 주입해야함
-     */
-//    private DiscountPolicy discountPolicy;
-//    private final MemberRepository memberRepository;
+*/
+
+@Component
+@RequiredArgsConstructor //final 이 붙은 필드를 생성자를 만들어서 초기화해줌
+public class OrderServiceImpl implements OrderService {
+
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
 
-    @Autowired // 생성자가 하나일 경우 @Autowired 생략 가능, 주입할 대상이 없어도 동작하게 하려면 required = false 로 지정하면 된다
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-        System.out.println("memberRepository = " + memberRepository);
-        System.out.println("discountPolicy = " + discountPolicy);
-        this.discountPolicy = discountPolicy;
-        this.memberRepository = memberRepository;
-    }
-
-//    @Autowired // 일반 메서드 주입
-//    public void init(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-//        this.memberRepository = memberRepository;
-//        this.discountPolicy = discountPolicy;
-//    }
+    // 생성자가 하나일 경우, 생성자에 @Autowired 생략 가능, 주입할 대상이 없어도 동작하게 하려면 required = false 로 지정하면 된다
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
