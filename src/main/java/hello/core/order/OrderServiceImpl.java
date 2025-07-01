@@ -1,9 +1,9 @@
 package hello.core.order;
 
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,14 +20,19 @@ import org.springframework.stereotype.Component;
     제3자가 클라이언트인 OrderServiceImpl 에 추상체인 DiscountPolicy 의 구현 객체를 대신 생성하고 주입해야함
 */
 
+//@RequiredArgsConstructor //final 이 붙은 필드를 생성자를 만들어서 초기화해줌
 @Component
-@RequiredArgsConstructor //final 이 붙은 필드를 생성자를 만들어서 초기화해줌
 public class OrderServiceImpl implements OrderService {
 
     private final MemberRepository memberRepository;
     private final DiscountPolicy discountPolicy;
 
     // 생성자가 하나일 경우, 생성자에 @Autowired 생략 가능, 주입할 대상이 없어도 동작하게 하려면 required = false 로 지정하면 된다
+    @Autowired
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
+        this.memberRepository = memberRepository;
+        this.discountPolicy = discountPolicy;
+    }
 
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice) {
