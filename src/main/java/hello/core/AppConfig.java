@@ -20,7 +20,6 @@ import org.springframework.context.annotation.Configuration;
 추가: 스프링 컨테이너는 기본적으로 객체를 싱글톤으로 만들어서 관리해 줌
  */
 
-@Configuration
 public class AppConfig {
 
     // call AppConfig.memberService
@@ -36,7 +35,7 @@ public class AppConfig {
     @Bean
     public OrderService orderService() {
         System.out.println("call AppConfig.orderService");
-        return new OrderServiceImpl(discountPolicy(), memberRepository());
+        return new OrderServiceImpl(memberRepository(), discountPolicy());
     }
 
     @Bean
