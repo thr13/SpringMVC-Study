@@ -25,7 +25,10 @@ public class PrototypeTest {
 
         assertThat(prototypeBean1).isNotSameAs(prototypeBean2);
 
-        ac.close();
+        prototypeBean1.destroy(); // 수동 종료
+        prototypeBean2.destroy(); // 수동 종료
+
+        ac.close(); // 프로토타입 빈은 스프링 컨테이너가 생성, 의존관계주입, 초기화 까지만 관여하고 더는 관리하지 않기 떄문에 스프링 컨테이너 종료시 @PreDestroy 가 실행되지 않는다
     }
 
     @Scope("prototype")
