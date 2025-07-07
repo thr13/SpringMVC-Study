@@ -1,4 +1,4 @@
-package hello.servlet.servelt;
+package hello.servlet.servelt.basic;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
