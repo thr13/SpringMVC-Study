@@ -14,6 +14,10 @@
 - Servlet 과 JSP 를 이용한 Moel View Controller 구현
 - Front Controller Pattern 구현
 
+### 스프링 MVC 구조 이해
+- 직접 만든 Front Controller 와 스프링 MVC 비교
+- DispatcherServlet 을 사용하는 스프링 MVC 의 핸들러 매핑, 어댑터, 뷰 리졸버 이해
+
 #### 학습환경
 - 운영체제: macOS 15.5
 - JAVA 21, Spring 3.5.3
