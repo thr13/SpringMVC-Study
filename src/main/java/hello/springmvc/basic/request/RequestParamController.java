@@ -1,9 +1,11 @@
 package hello.springmvc.basic.request;
 
+import hello.springmvc.basic.HelloData;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,7 +27,8 @@ public class RequestParamController {
         response.getWriter().write("ok"); // 반환타입이 void 여도 response 에 값을 쓰면 메시지 바디에 그대로 들어간다
     }
 
-    @ResponseBody // @RestController 대신 사용 -> 반환되는 문자열을 View 를 찾는게 사용하지 않고 곧바로 HTTP 메세지 바디에 값을 넣는다 -> 즉, @RestController 와 같은 효과이다
+    @ResponseBody
+    // @RestController 대신 사용 -> 반환되는 문자열을 View 를 찾는게 사용하지 않고 곧바로 HTTP 메세지 바디에 값을 넣는다 -> 즉, @RestController 와 같은 효과이다
     @RequestMapping("/request-param-v2")
     public String requestParamV2(
             @RequestParam("username") String memberName, // HTTP 요청의 이름("username")
@@ -60,7 +63,7 @@ public class RequestParamController {
     @RequestMapping("/request-param-required")
     public String requestParamRequired(
             @RequestParam(required = true) String username // required 옵션이 true(디폴트값) 인 경우 해당 파라미터는 무조건 있어야 한다!!
-            ,@RequestParam(required = false) int age) {
+            , @RequestParam(required = false) int age) {
 
         log.info("username={}, age={}", username, age);
 
@@ -85,6 +88,7 @@ public class RequestParamController {
 
     /**
      * 요청 파라미터를 Map 으로 조회하기
+     *
      * @RequestParam Map(하나의 키에 하나의 값), MultiValueMap(하나의 키에 여러 값이 들어감)
      * Map(key=value)
      * MultiValueMap(key=[value1, value2, ...]) ex) (key=userIds, value=[id1, id2])
@@ -93,9 +97,43 @@ public class RequestParamController {
     @RequestMapping("/request-param-map")
     public String requestParamMap(@RequestParam Map<String, Object> paramMap) {
 
-        log.info("username={}, age={}", paramMap.get("username"),
-                paramMap.get("age"));
+        log.info("username={}, age={}", paramMap.get("username"), paramMap.get("age"));
 
         return "ok";
     }
+
+    /*
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modelAttributeV1(@RequestParam String username, @RequestParam int age) {
+        HelloData helloData = new HelloData();
+        helloData.setUsername(username);
+        helloData.setAge(age);
+
+        //log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+        log.info("helloData = {}", helloData); // toString 이 오버라이드 됬다면 객체를 직접 찍었을때 String 으로 출력된다
+
+        return "ok";
+    }
+     */
+
+    @ResponseBody
+    @RequestMapping("/model-attribute-v1")
+    public String modelAttributeV1(@ModelAttribute HelloData helloData) { // @ModelAttribute 는 해당 객체를 생성하고, 해당 객체의 프로퍼티(setter,getter 등)을 찾고 값을 입력(바인딩) 한다
+
+        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+
+        return "ok";
+    }
+
+    @ResponseBody
+    @RequestMapping("/model-attribute-v2")
+    public String modelAttributeV2(HelloData helloData) { // @ModelAttribute 는 생략가능하다!!
+
+        log.info("username={}, age={}", helloData.getUsername(), helloData.getAge());
+
+        return "ok";
+    }
+
+    // 스프링은 단순 타입인 경우 @RequestParam 을 쓰고, 단순타입이 아니고 argument resolver 로 지정해둔 타입이 아닌 경우 @ModelAttribute 를 사용한다
 }
