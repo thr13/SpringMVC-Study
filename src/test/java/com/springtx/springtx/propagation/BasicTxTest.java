@@ -44,8 +44,51 @@ class BasicTxTest {
         log.info("트랜잭션 시작");
         TransactionStatus status = txManager.getTransaction(new DefaultTransactionAttribute());
 
-        log.info("트랜잭백 롤백 시작");
+        log.info("트랜잭션 롤백 시작");
         txManager.rollback(status);
         log.info("트랜잭션 롤백 완료");
     }
+
+    @Test
+    void double_commit() {
+        log.info("트랜잭션1 시작");
+        TransactionStatus tx1 = txManager.getTransaction(new DefaultTransactionAttribute());
+        log.info("트랜잭션1 커밋");
+        txManager.commit(tx1);
+
+        log.info("트랜잭션2 시작");
+        TransactionStatus tx2 = txManager.getTransaction(new DefaultTransactionAttribute());
+        log.info("트랜잭션2 커밋");
+        txManager.commit(tx2);
+    }
+
+    @Test
+    void double_commit_rollback() {
+        log.info("트랜잭션1 시작");
+        TransactionStatus tx1 = txManager.getTransaction(new DefaultTransactionAttribute());
+        log.info("트랜잭션1 커밋");
+        txManager.commit(tx1);
+
+        log.info("트랜잭션2 시작");
+        TransactionStatus tx2 = txManager.getTransaction(new DefaultTransactionAttribute());
+        log.info("트랜잭션2 롤백");
+        txManager.rollback(tx2);
+    }
+
+    @Test
+    void inner_commit() {
+        log.info("외부 트랜잭션 시작");
+        TransactionStatus outer = txManager.getTransaction(new DefaultTransactionAttribute()); // 트랜잭션 매니저를 호출하여 외부 트랜잭션 시작 -> 물리 트랜잭션 시작
+        log.info("outer.isNewTransaction()={}", outer.isNewTransaction());
+
+        log.info("내부 트랜잭션 시작");
+        TransactionStatus inner = txManager.getTransaction(new DefaultTransactionAttribute()); // 내부 트랜잭션 시작 -> 트랜잭션 매니저가 트랜잭션 동기화 매니저를 통해 기존 트랜잭션에 참여
+        log.info("inner.isNewTransaction()={}", inner.isNewTransaction());
+        log.info("내부 트랜잭션 커밋");
+        txManager.commit(inner); // 내부 트랜잭션은 트랜잭션 매니저를 통한 신규 트랜잭션이 아니므로 실제 커밋을 호출하지 않는다
+
+        log.info("외부 트랜잭션 커밋");
+        txManager.commit(outer); // 트랜잭션 매니저를 통한 신규 트랜잭션이므로 실제 커밋이 반영되고 물리 트랜잭션을 종료시킨다
+    }
+
 }
