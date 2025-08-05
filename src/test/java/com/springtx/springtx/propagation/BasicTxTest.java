@@ -91,4 +91,18 @@ class BasicTxTest {
         txManager.commit(outer); // 트랜잭션 매니저를 통한 신규 트랜잭션이므로 실제 커밋이 반영되고 물리 트랜잭션을 종료시킨다
     }
 
+    @Test
+    void outer_rollback() {
+        log.info("외부 트랜잭션 시작");
+        TransactionStatus outer = txManager.getTransaction(new DefaultTransactionAttribute());
+
+        log.info("내부 트랜잭션 시작");
+        TransactionStatus inner = txManager.getTransaction(new DefaultTransactionAttribute());
+        log.info("내부 트랜잭션 커밋");
+        txManager.commit(inner);
+
+        log.info("외부 트랜잭션 롤백");
+        txManager.rollback(outer); // 외부 트랜잭션만 롤백되면, 전체 물리 트랜잭션이 롤백된다
+    }
+
 }
