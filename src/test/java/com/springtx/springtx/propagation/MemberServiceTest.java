@@ -57,4 +57,42 @@ class MemberServiceTest {
         assertTrue(memberRepository.find(username).isPresent()); // Member 의 트랜잭션은 커밋됨
         assertTrue(logRepository.find(username).isEmpty()); // Log 의 트랜잭션은 롤백되므로 비어있다
     }
+
+    /**
+     * memberService    @Transactional:ON
+     * memberRepository @Transactional:OFF
+     * logRepository    @Transactional:OFF
+     */
+    @DisplayName("memberService 에 @Transaction 사용")
+    @Test
+    void singleTx() {
+        //given
+        String username = "outerTxOff_success";
+
+        //when
+        memberService.joinV1(username);
+
+        //then
+        assertTrue(memberRepository.find(username).isPresent());
+        assertTrue(logRepository.find(username).isPresent());
+    }
+
+    /**
+     * memberService    @Transactional:ON
+     * memberRepository @Transactional:ON
+     * logRepository    @Transactional:ON
+     */
+    @DisplayName("트랜잭션 전파")
+    @Test
+    void outerTxOn_success() {
+        //given
+        String username = "outerTxOn_success";
+
+        //when
+        memberService.joinV1(username);
+
+        //then
+        assertTrue(memberRepository.find(username).isPresent());
+        assertTrue(logRepository.find(username).isPresent());
+    }
 }
