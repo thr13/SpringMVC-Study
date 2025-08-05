@@ -8,9 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.UnexpectedRollbackException;
+import org.springframework.transaction.*;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 
 import javax.sql.DataSource;
@@ -122,6 +120,24 @@ class BasicTxTest {
         Assertions.assertThatThrownBy(() -> txManager.commit(outer))
                 .isInstanceOf(UnexpectedRollbackException.class);
 
+    }
+
+    @Test
+    void inner_rollback_requires_new() {
+        log.info("외부 트랜잭션 시작");
+        TransactionStatus outer = txManager.getTransaction(new DefaultTransactionAttribute());
+        log.info("outer.isNewTransaction()={}", outer.isNewTransaction()); //true
+
+        log.info("내부 트랜잭션 시작");
+        DefaultTransactionAttribute definition = new DefaultTransactionAttribute();
+        definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW); // PROPAGATION_REQUIRES_NEW: 항상 새 물리 트랜잭션(DB 커넥션)을 만들어서 사용함
+        TransactionStatus inner = txManager.getTransaction(definition); // 기존 트랜잭션 커넥션(con1)은 트랜잭션 매니저에 보관되고 새 물리 트랜잭션(con2)이 사용됨
+        log.info("inner.isNewTransaction()={}", inner.isNewTransaction()); //true
+
+        log.info("내부 트랜잭션 롤백");
+        txManager.rollback(inner); //롤백 - con2 종료되거나 커넥션 풀에 반납됨, 그리고 con1 의 보류가 끝남
+        log.info("외부 트랜잭션 커밋");
+        txManager.commit(outer); //커밋 - con1 종료
     }
 
 }
