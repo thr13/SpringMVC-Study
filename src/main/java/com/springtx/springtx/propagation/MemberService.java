@@ -33,6 +33,7 @@ public class MemberService {
      * 현재 별도의 트랜잭션을 설정하지 않음
      * @param username
      */
+    @Transactional
     public void joinV2(String username) {
         Member member = new Member(username);
         Log logMessage = new Log(username);
