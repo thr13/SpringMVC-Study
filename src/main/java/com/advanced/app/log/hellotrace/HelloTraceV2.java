@@ -1,4 +1,4 @@
-package com.advanced.trace.hellotrace;
+package com.advanced.app.log.hellotrace;
 
 import com.advanced.trace.TraceId;
 import com.advanced.trace.TraceStatus;

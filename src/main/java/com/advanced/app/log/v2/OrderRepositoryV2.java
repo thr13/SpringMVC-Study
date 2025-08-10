@@ -2,7 +2,7 @@ package com.advanced.app.log.v2;
 
 import com.advanced.trace.TraceId;
 import com.advanced.trace.TraceStatus;
-import com.advanced.trace.hellotrace.HelloTraceV2;
+import com.advanced.app.log.hellotrace.HelloTraceV2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
