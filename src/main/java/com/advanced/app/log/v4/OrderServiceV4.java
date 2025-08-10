@@ -1,6 +1,5 @@
-package com.advanced.app.v4;
+package com.advanced.app.log.v4;
 
-import com.advanced.trace.TraceStatus;
 import com.advanced.trace.logtrace.LogTrace;
 import com.advanced.trace.template.AbstractTemplate;
 import lombok.RequiredArgsConstructor;

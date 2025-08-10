@@ -1,9 +1,8 @@
-package com.advanced.app.v5;
+package com.advanced.app.log.v5;
 
 import com.advanced.trace.callback.TraceCallback;
 import com.advanced.trace.callback.TraceTemplate;
 import com.advanced.trace.logtrace.LogTrace;
-import com.advanced.trace.template.AbstractTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 

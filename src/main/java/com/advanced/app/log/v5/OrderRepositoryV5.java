@@ -1,32 +1,30 @@
-package com.advanced.app.v3;
+package com.advanced.app.log.v5;
 
-import com.advanced.trace.TraceStatus;
+import com.advanced.trace.callback.TraceTemplate;
 import com.advanced.trace.logtrace.LogTrace;
+import com.advanced.trace.template.AbstractTemplate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-@RequiredArgsConstructor
-public class OrderRepositoryV3 {
+public class OrderRepositoryV5 {
 
-    private final LogTrace trace;
+    private final TraceTemplate template;
+
+    public OrderRepositoryV5(LogTrace trace) {
+        this.template = new TraceTemplate(trace);
+    }
 
     public void save(String itemId) {
-
-        TraceStatus status = null;
-        try {
-            status = trace.begin("OrderRepository.save()");
-
+        template.execute("OrderRepository.save()", () -> {
+            //저장 로직
             if (itemId.equals("ex")) {
                 throw new IllegalStateException("예외 발생!");
             }
             sleep(1000);
 
-            trace.end(status);
-        } catch (Exception e) {
-            trace.exception(status, e);
-            throw e;
-        }
+            return null;
+        });
     }
 
     private void sleep(int millis) {

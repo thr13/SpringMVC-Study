@@ -1,30 +1,33 @@
-package com.advanced.app.v5;
+package com.advanced.app.log.v1;
 
-import com.advanced.trace.callback.TraceTemplate;
-import com.advanced.trace.logtrace.LogTrace;
-import com.advanced.trace.template.AbstractTemplate;
+import com.advanced.trace.TraceStatus;
+import com.advanced.trace.hellotrace.HelloTraceV1;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class OrderRepositoryV5 {
+@RequiredArgsConstructor
+public class OrderRepositoryV1 {
 
-    private final TraceTemplate template;
-
-    public OrderRepositoryV5(LogTrace trace) {
-        this.template = new TraceTemplate(trace);
-    }
+    private final HelloTraceV1 trace;
 
     public void save(String itemId) {
-        template.execute("OrderRepository.save()", () -> {
+
+        TraceStatus status = null;
+        try {
+            status = trace.begin("OrderRepository.save()");
+
             //저장 로직
             if (itemId.equals("ex")) {
                 throw new IllegalStateException("예외 발생!");
             }
             sleep(1000);
 
-            return null;
-        });
+            trace.end(status);
+        } catch (Exception e) {
+            trace.exception(status, e);
+            throw e;
+        }
     }
 
     private void sleep(int millis) {

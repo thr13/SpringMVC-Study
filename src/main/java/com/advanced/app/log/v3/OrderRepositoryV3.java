@@ -1,15 +1,15 @@
-package com.advanced.app.v1;
+package com.advanced.app.log.v3;
 
 import com.advanced.trace.TraceStatus;
-import com.advanced.trace.hellotrace.HelloTraceV1;
+import com.advanced.trace.logtrace.LogTrace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class OrderRepositoryV1 {
+public class OrderRepositoryV3 {
 
-    private final HelloTraceV1 trace;
+    private final LogTrace trace;
 
     public void save(String itemId) {
 
@@ -17,7 +17,6 @@ public class OrderRepositoryV1 {
         try {
             status = trace.begin("OrderRepository.save()");
 
-            //저장 로직
             if (itemId.equals("ex")) {
                 throw new IllegalStateException("예외 발생!");
             }
