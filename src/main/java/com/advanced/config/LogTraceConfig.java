@@ -1,6 +1,5 @@
 package com.advanced.config;
 
-import com.advanced.trace.logtrace.FieldLogTrace;
 import com.advanced.trace.logtrace.LogTrace;
 import com.advanced.trace.logtrace.ThreadLogTrace;
 import org.springframework.context.annotation.Bean;

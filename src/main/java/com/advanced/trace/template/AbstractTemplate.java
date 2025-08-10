@@ -15,11 +15,8 @@ public abstract class AbstractTemplate<T> {
         TraceStatus status = null;
 
         try {
-            status = trace.begin(message);
-
             //로직 호출
             status = trace.begin(message);
-
 
             T result = call();
             trace.end(status);
