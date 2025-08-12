@@ -2,12 +2,18 @@ package com.advanced;
 
 import com.advanced.config.AppV1Config;
 import com.advanced.config.AppV2Config;
+import com.advanced.config.v1_proxy.ConcreteProxyConfig;
+import com.advanced.config.v1_proxy.InterfaceProxyConfig;
+import com.advanced.trace.logtrace.LogTrace;
+import com.advanced.trace.logtrace.ThreadLogTrace;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 
 //@Import(AppV1Config.class)
-@Import(AppV2Config.class)
+//@Import({InterfaceProxyConfig.class, AppV2Config.class})
+@Import(ConcreteProxyConfig.class)
 @SpringBootApplication(scanBasePackages = "com.advanced.app")
 public class AdvancedApplication {
 
@@ -15,4 +21,10 @@ public class AdvancedApplication {
 		SpringApplication.run(AdvancedApplication.class, args);
 	}
 
+	/*
+	@Bean
+	public LogTrace logTrace() {
+		return new ThreadLogTrace();
+	}
+	 */
 }
