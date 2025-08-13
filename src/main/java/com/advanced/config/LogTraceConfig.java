@@ -1,4 +1,4 @@
-package com.advanced.app.log.hellotrace;
+package com.advanced.config;
 
 import com.advanced.trace.logtrace.LogTrace;
 import com.advanced.trace.logtrace.ThreadLogTrace;
