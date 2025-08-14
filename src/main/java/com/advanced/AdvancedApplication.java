@@ -1,13 +1,6 @@
 package com.advanced;
 
-import com.advanced.config.AppV1Config;
-import com.advanced.config.AppV2Config;
-import com.advanced.config.v1_proxy.ConcreteProxyConfig;
-import com.advanced.config.v1_proxy.InterfaceProxyConfig;
-import com.advanced.config.v2_dynamicproxy.DynamicProxyBasicConfig;
-import com.advanced.config.v2_dynamicproxy.DynamicProxyFilterConfig;
-import com.advanced.config.v3_proxyfactory.ProxyFactoryConfigV1;
-import com.advanced.config.v3_proxyfactory.ProxyFactoryConfigV2;
+import com.advanced.config.v4_postprocessor.BeanPostProcessorConfig;
 import com.advanced.trace.logtrace.LogTrace;
 import com.advanced.trace.logtrace.ThreadLogTrace;
 import org.springframework.boot.SpringApplication;
@@ -21,16 +14,17 @@ import org.springframework.context.annotation.Import;
 //@Import({DynamicProxyBasicConfig.class, AppV2Config.class})
 //@Import({DynamicProxyFilterConfig.class, AppV2Config.class})
 //@Import({ProxyFactoryConfigV1.class, AppV2Config.class})
-@Import(ProxyFactoryConfigV2.class)
+//@Import(ProxyFactoryConfigV2.class)
+@Import(BeanPostProcessorConfig.class)
 @SpringBootApplication(scanBasePackages = "com.advanced.app")
 public class AdvancedApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(AdvancedApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(AdvancedApplication.class, args);
+    }
 
-	@Bean
-	public LogTrace logTrace() {
-		return new ThreadLogTrace();
-	}
+    @Bean
+    public LogTrace logTrace() {
+        return new ThreadLogTrace();
+    }
 }
