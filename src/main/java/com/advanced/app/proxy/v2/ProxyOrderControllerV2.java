@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
-//@RestController
+@RestController
 public class ProxyOrderControllerV2 {
 
     private final ProxyOrderServiceV2 orderService;

@@ -2,7 +2,7 @@ package com.advanced.app.proxy.v1;
 
 import org.springframework.web.bind.annotation.*;
 
-//@RestController
+@RestController
 public interface ProxyOrderControllerV1 {
 
     @GetMapping("/proxy/v1/request")
