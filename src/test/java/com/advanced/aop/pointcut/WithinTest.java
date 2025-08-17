@@ -26,32 +26,32 @@ class WithinTest {
 
     @Test
     void withinExact() {
-        pointcut.setExpression("within(hello.aop.member.MemberServiceImpl)");
+        pointcut.setExpression("within(com.advanced.member.MemberServiceImpl)");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
 
     @Test
     void withinStar() {
-        pointcut.setExpression("within(hello.aop.member.*Service*)");
+        pointcut.setExpression("within(com.advanced.member.*Service*)");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
 
     @Test
     void withinSubPackage() {
-        pointcut.setExpression("within(hello.aop..*)");
+        pointcut.setExpression("within(com.advanced..*)");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
 
     @Test
     @DisplayName("within 은 target 의 타입에만 직접 적용, 인터페이스 x")
     void withinSuperTypeFalse() {
-        pointcut.setExpression("within(hello.aop.member.MemberService)");
+        pointcut.setExpression("within(com.advanced.member.MemberService)");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isFalse();
     }
     @Test
     @DisplayName("execution 은 타입 기반, 인터페이스를 선정 가능")
     void executionSuperTypeTrue() {
-        pointcut.setExpression("execution(* hello.aop.member.MemberService.*(..))");
+        pointcut.setExpression("execution(* com.advanced.member.MemberService.*(..))");
         assertThat(pointcut.matches(helloMethod, MemberServiceImpl.class)).isTrue();
     }
 }
