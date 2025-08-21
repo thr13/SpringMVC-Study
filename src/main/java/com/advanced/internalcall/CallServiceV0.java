@@ -14,7 +14,7 @@ public class CallServiceV0 {
 
     public void external() {
         log.info("call external");
-        internal(); //사실상 this.internal(0
+        internal(); //사실상 this.internal
     }
 
     public void internal() {
