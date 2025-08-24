@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Import;
 //@Import(BeanPostProcessorConfig.class)
 //@Import(AutoProxyConfig.class)
 //@Import(AopConfig.class)
-@SpringBootApplication(scanBasePackages = "com.advanced.internalcall")
+@SpringBootApplication(scanBasePackages = "com.advanced.member")
 public class AdvancedApplication {
 
     public static void main(String[] args) {
